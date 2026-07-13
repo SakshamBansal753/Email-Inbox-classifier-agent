@@ -11,7 +11,7 @@ An automation workflow built with **n8n** that helps manage your Gmail inbox by 
 - 🔐 Uses Gmail OAuth2 authentication
 
 ---
-
+<img src="https://github.com/SakshamBansal753/Email-Inbox-classifier-agent/blob/main/Inbocer.png"/>
 ## Prerequisites
 
 Before running this project, ensure you have:
