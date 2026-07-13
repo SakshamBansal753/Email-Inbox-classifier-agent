@@ -1,0 +1,852 @@
+{
+  "name": "Inbox manager",
+  "nodes": [
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "simple": false,
+        "filters": {},
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmailTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        0,
+        0
+      ],
+      "id": "67ebdca0-e05b-4b46-9a15-b9dd5287cb55",
+      "name": "Gmail Trigger",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "UbjZeTEKHTDQKi29",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "inputText": "=Subject:{{ $json.subject }}\nEmai; body:{{ $json.text }}\nSender Mail:{{ $json.from.value[0].address }}\nSender name:{{ $json.from.value[0].name }}",
+        "categories": {
+          "categories": [
+            {
+              "category": "Monitoring",
+              "description": "Classify any message as Monitoring where the sender's name or email matches any of the following -eval@site24x7.com - Site24x7"
+            },
+            {
+              "category": "Priority",
+              "description": "Classify any message as Priority where the senders name matches any of the following sponsors- updates@unstop.emai. Classify any message as Priority if seems important .Classify any message as Priority  where the keyword is  internship"
+            },
+            {
+              "category": "Newsletter",
+              "description": "Classify any message as  newsletter where username or email matches any of the following- newsletter@coderabbit.a -noreply@medium.com-Medium    \nClassify any message as Newsletter which you think as  Newsletter             \nClassify any Message as Newletter where the subject contains the keyword 'Medium'"
+            },
+            {
+              "category": "Jobs",
+              "description": "Classify any message as jobs where subject has any of the following - Linkedin-Indeed-Naukri-Jobs\nClassify any message as Jobs which you think should be as jobs"
+            },
+            {
+              "category": "Subscriptions",
+              "description": "Classify any message as Subscriptions wherre subject contain any of the following -Youtube-Hotstar-Netflix\nClassify any message as subscriptions as you think it should be subscriptions"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.textClassifier",
+      "typeVersion": 1.1,
+      "position": [
+        224,
+        -48
+      ],
+      "id": "d8c0d392-5ee7-4dc3-a3e0-8b5d0a552106",
+      "name": "Text Classifier"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1.1,
+      "position": [
+        224,
+        256
+      ],
+      "id": "95288330-3b93-4e64-ae17-ab47d896984e",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "2yR3IYtTyBWlIQ5b",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "addLabels",
+        "messageId": "={{ $json.id }}",
+        "labelIds": [
+          "Label_8894523911174177464"
+        ]
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        720,
+        -176
+      ],
+      "id": "1cc2ad8b-c81d-4005-92ba-618edaafda09",
+      "name": "Priority",
+      "webhookId": "2cf44cd2-8da3-462c-910c-bedb8df2230f",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "UbjZeTEKHTDQKi29",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "addLabels",
+        "messageId": "={{ $json.id }}",
+        "labelIds": [
+          "Label_550332266520913180"
+        ]
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        720,
+        352
+      ],
+      "id": "e911a325-be5e-4321-bc9c-a7e86bf5b155",
+      "name": "Priority4",
+      "webhookId": "2cf44cd2-8da3-462c-910c-bedb8df2230f",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "UbjZeTEKHTDQKi29",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "addLabels",
+        "messageId": "={{ $json.id }}",
+        "labelIds": [
+          "Label_8990890618305119283"
+        ]
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        720,
+        -352
+      ],
+      "id": "e1a1ab3a-5f6c-465e-8fc5-6818c9f79084",
+      "name": "Monitoring",
+      "webhookId": "2cf44cd2-8da3-462c-910c-bedb8df2230f",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "UbjZeTEKHTDQKi29",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "addLabels",
+        "messageId": "={{ $json.id }}",
+        "labelIds": [
+          "Label_7388142421141630168"
+        ]
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        720,
+        0
+      ],
+      "id": "c28aeadf-01cd-43b5-8aa2-0ea5cf5c9e41",
+      "name": "Newsletter",
+      "webhookId": "2cf44cd2-8da3-462c-910c-bedb8df2230f",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "UbjZeTEKHTDQKi29",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "addLabels",
+        "messageId": "={{ $json.id }}",
+        "labelIds": [
+          "Label_1582795044438988998"
+        ]
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        720,
+        176
+      ],
+      "id": "171740d0-94f8-4658-ac62-9c35194a3d92",
+      "name": "Jobs",
+      "webhookId": "2cf44cd2-8da3-462c-910c-bedb8df2230f",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "UbjZeTEKHTDQKi29",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "removeLabels",
+        "messageId": "={{ $json.id }}",
+        "labelIds": [
+          "INBOX"
+        ]
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        960,
+        -176
+      ],
+      "id": "1212ab30-f9fe-43f8-9db8-88524bc34e74",
+      "name": "Remove label from message",
+      "webhookId": "904d70fc-ca50-4253-9da5-aa40b6276c86",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "UbjZeTEKHTDQKi29",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "inputText": "=Subject:{{ $json.Subject }}\nEmai; body:{{ $json.snippet }}\nSender :{{ $json.From }}\n",
+        "categories": {
+          "categories": [
+            {
+              "category": "Monitoring",
+              "description": "Classify any message as Monitoring where the sender's name or email matches any of the following -eval@site24x7.com - Site24x7"
+            },
+            {
+              "category": "Priority",
+              "description": "Classify any message as Priority where the senders name matches any of the following sponsors- updates@unstop.emai. Classify any message as Priority if seems important .Classify any message as Priority  where the keyword is  internship"
+            },
+            {
+              "category": "Newsletter",
+              "description": "Classify any message as  newsletter where username or email matches any of the following- newsletter@coderabbit.a -noreply@medium.com-Medium    \nClassify any message as Newsletter which you think as  Newsletter             \nClassify any Message as Newletter where the subject contains the keyword 'Medium'"
+            },
+            {
+              "category": "Jobs",
+              "description": "Classify any message as jobs where subject has any of the following - Linkedin-Indeed-Naukri-Jobs\nClassify any message as Jobs which you think should be as jobs"
+            },
+            {
+              "category": "Subscriptions",
+              "description": "Classify any message as Subscriptions wherre subject contain any of the following -Youtube-Hotstar-Netflix\nClassify any message as subscriptions as you think it should be subscriptions"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.textClassifier",
+      "typeVersion": 1.1,
+      "position": [
+        1712,
+        -96
+      ],
+      "id": "ceba826b-0e69-489d-b215-d1e4756fda20",
+      "name": "Text Classifier1"
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-3.1-flash-lite-preview",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1.1,
+      "position": [
+        1712,
+        208
+      ],
+      "id": "6e582609-b2ec-4263-890e-24803170bc95",
+      "name": "Google Gemini Chat Model1",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "2yR3IYtTyBWlIQ5b",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "addLabels",
+        "messageId": "={{ $json.id }}",
+        "labelIds": [
+          "Label_8894523911174177464"
+        ]
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        2208,
+        -224
+      ],
+      "id": "5139baef-9119-4ae5-890d-a5ea53c2e1c3",
+      "name": "Priority1",
+      "webhookId": "2cf44cd2-8da3-462c-910c-bedb8df2230f",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "UbjZeTEKHTDQKi29",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "addLabels",
+        "messageId": "={{ $json.id }}",
+        "labelIds": [
+          "Label_550332266520913180"
+        ]
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        2208,
+        304
+      ],
+      "id": "3e28b63c-468b-4af8-b34e-5ab4ac0652d7",
+      "name": "Priority5",
+      "webhookId": "2cf44cd2-8da3-462c-910c-bedb8df2230f",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "UbjZeTEKHTDQKi29",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "addLabels",
+        "messageId": "={{ $json.id }}",
+        "labelIds": [
+          "Label_8990890618305119283"
+        ]
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        2208,
+        -400
+      ],
+      "id": "a739a929-9b7a-49c6-aece-f968b48534ab",
+      "name": "Monitoring1",
+      "webhookId": "2cf44cd2-8da3-462c-910c-bedb8df2230f",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "UbjZeTEKHTDQKi29",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "addLabels",
+        "messageId": "={{ $json.id }}",
+        "labelIds": [
+          "Label_7388142421141630168"
+        ]
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        2208,
+        -48
+      ],
+      "id": "c8815f5c-1325-4968-a4ac-2f1d8fa3ae1f",
+      "name": "Newsletter1",
+      "webhookId": "2cf44cd2-8da3-462c-910c-bedb8df2230f",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "UbjZeTEKHTDQKi29",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "addLabels",
+        "messageId": "={{ $json.id }}",
+        "labelIds": [
+          "Label_1582795044438988998"
+        ]
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        2208,
+        128
+      ],
+      "id": "ce91373d-444c-4e0f-8d01-f25c813a281d",
+      "name": "Jobs1",
+      "webhookId": "2cf44cd2-8da3-462c-910c-bedb8df2230f",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "UbjZeTEKHTDQKi29",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        1312,
+        -48
+      ],
+      "id": "f8e0fc0c-86c6-4216-88c4-bd4d800c054b",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "limit": 10,
+        "filters": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        1504,
+        -48
+      ],
+      "id": "d9ab4024-b04e-4e5c-9c6c-6d84500ca317",
+      "name": "Get many messages",
+      "webhookId": "7b9fba73-5d72-4fb8-8ed3-bbc949403bae",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "UbjZeTEKHTDQKi29",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Auto Categorize New Emails\nAssign labels to emails as they recieved in my Email workfow",
+        "height": 928,
+        "width": 1184,
+        "color": "#2E42A3"
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -32,
+        -400
+      ],
+      "typeVersion": 1,
+      "id": "69e3aa51-76c3-4413-bab6-cb15cf9b3386",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "## Auto Categorize Emails\nAssign labels to old emails already in inbox",
+        "height": 944,
+        "width": 1216,
+        "color": "#5E5536"
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1216,
+        -416
+      ],
+      "typeVersion": 1,
+      "id": "796edd85-8c46-4381-8470-a0cb72db5950",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "operation": "removeLabels",
+        "messageId": "={{ $json.id }}",
+        "labelIds": [
+          "INBOX"
+        ]
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        960,
+        16
+      ],
+      "id": "cb84cfec-c764-4311-91ad-23c655267ee9",
+      "name": "Remove label from message1",
+      "webhookId": "904d70fc-ca50-4253-9da5-aa40b6276c86",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "UbjZeTEKHTDQKi29",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "removeLabels",
+        "messageId": "={{ $json.id }}",
+        "labelIds": [
+          "INBOX"
+        ]
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        960,
+        192
+      ],
+      "id": "0e3054ce-aac9-4ebc-8a02-8b15aed1f291",
+      "name": "Remove label from message2",
+      "webhookId": "904d70fc-ca50-4253-9da5-aa40b6276c86",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "UbjZeTEKHTDQKi29",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "removeLabels",
+        "messageId": "={{ $json.id }}",
+        "labelIds": [
+          "INBOX"
+        ]
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        960,
+        368
+      ],
+      "id": "4ef6c2bb-c1f8-44e9-ae31-c0fd3e04cbf2",
+      "name": "Remove label from message3",
+      "webhookId": "904d70fc-ca50-4253-9da5-aa40b6276c86",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "UbjZeTEKHTDQKi29",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "removeLabels",
+        "messageId": "={{ $json.id }}",
+        "labelIds": [
+          "INBOX"
+        ]
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        960,
+        -352
+      ],
+      "id": "0aa79b11-1d95-4a6a-af72-b312c7f374c7",
+      "name": "Remove label from message4",
+      "webhookId": "904d70fc-ca50-4253-9da5-aa40b6276c86",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "UbjZeTEKHTDQKi29",
+          "name": "Gmail account"
+        }
+      }
+    }
+  ],
+  "pinData": {
+    "Gmail Trigger": [
+      {
+        "json": {
+          "id": "19f5cd2a05be0566",
+          "threadId": "19f5cd2a05be0566",
+          "labelIds": [
+            "UNREAD",
+            "IMPORTANT",
+            "Label_8894523911174177464",
+            "CATEGORY_PERSONAL",
+            "INBOX"
+          ],
+          "sizeEstimate": 6973,
+          "headers": {
+            "delivered-to": "Delivered-To: kanhabansal563@gmail.com",
+            "received": "Received: from mail-sor-f41.google.com (mail-sor-f41.google.com. [209.85.220.41])\r\n        by mx.google.com with SMTPS id 41be03b00d2f7-ca150b50079sor18579977a12.5.2026.07.13.11.52.15\r\n        for <kanhabansal563@gmail.com>\r\n        (Google Transport Security);\r\n        Mon, 13 Jul 2026 11:52:15 -0700 (PDT)",
+            "x-received": "X-Received: by 2002:a05:6a20:c98b:b0:3b3:1c7b:ff7 with SMTP id\r\n adf61e73a8af0-3c110ad2e14mr11150705637.46.1783968734712; Mon, 13 Jul 2026\r\n 11:52:14 -0700 (PDT)",
+            "arc-seal": "ARC-Seal: i=1; a=rsa-sha256; t=1783968735; cv=none;\r\n        d=google.com; s=arc-20260327;\r\n        b=lQl4ki0Eyze3QGzz5dtOxnuzYjOAbXRorzuy1dAeQ83Bl6KYsdVrKi2rbE1RBAoArI\r\n         wCuvTFEd3oYCARqPTH6eIuE/526cHkVvUPy187TBvyA2dsRbzYhCi/6A7LHDiYQfI8Vr\r\n         wOlWoVXpRELMF+MiN/WU1EfwkGvxfhjDk8v9Tmx8iKjSJ1RTS5s5ESHFFrhY+z8Evf4V\r\n         iYvrYKxBH142C2K48N/3DkDT5eubVplLvCfM7uWopxZMH4Au8L8v+Y/PNBXhew3u8Jgm\r\n         8b4SMS0dtf9f0FAaNhGq3U2XvT/3MJ4O0aJjpN/zpUJwhlQ4Lq7B1F7eBv1pN/kbqEap\r\n         RjGQ==",
+            "arc-message-signature": "ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;\r\n        h=to:subject:message-id:date:from:mime-version:dkim-signature;\r\n        bh=7BJixiB7+wMYsvFq2yahM/rhYnAg/HntL+C/p88y6w0=;\r\n        fh=cth5gLNcc8c1hYQ7uevs6s2V+aPR9mpBe4wqge8XLLg=;\r\n        b=GVjS0wV2cUdMBm2G844F8kxCVzQV3LIuURsuNjY4FpXhNqgTNeRXdsDKlyd4jxZUJZ\r\n         aDtKh0Sx1K+oBwyvLWZ3HE9e5OsKisyEoJLL+1EA60+adNsCLUsIhunmC+1H+V5+Vro9\r\n         VAn/6M1ep43m4HR1TK1TH5YVp7ntCNCtpT7PoBfE6UsowvjgjY4ABiB+OzVY7t2fFmdq\r\n         ASWQH+dl62yu2rsfP3HkYis/RgJhQzp5OS1atjyy6JxA2W+v0NbJKwmddhRCMHm/colV\r\n         FjeHfA7OEk/2T6V1A1DFyKgP3WkUeviwxluQZWJT0uY+pt39hPze/RSE08cF+piULwUl\r\n         +Qhg==;\r\n        dara=google.com",
+            "arc-authentication-results": "ARC-Authentication-Results: i=1; mx.google.com; arc=none",
+            "return-path": "Return-Path: <24ad10sa56@mitsgwl.ac.in>",
+            "received-spf": "Received-SPF: none (google.com: 24ad10sa56@mitsgwl.ac.in does not designate permitted sender hosts) client-ip=209.85.220.41;",
+            "authentication-results": "Authentication-Results: mx.google.com;\r\n       dkim=pass header.i=@mitsgwl-ac-in.20251104.gappssmtp.com header.s=20251104 header.b=jx63BWS4;\r\n       arc=pass (i=1);\r\n       spf=none (google.com: 24ad10sa56@mitsgwl.ac.in does not designate permitted sender hosts) smtp.mailfrom=24ad10sa56@mitsgwl.ac.in;\r\n       dara=pass header.i=@gmail.com",
+            "dkim-signature": "DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;\r\n        d=mitsgwl-ac-in.20251104.gappssmtp.com; s=20251104; t=1783968735; x=1784573535; dara=google.com;\r\n        h=content-type:to:subject:message-id:date:from:mime-version:from:to\r\n         :cc:subject:date:message-id:reply-to:content-type;\r\n        bh=7BJixiB7+wMYsvFq2yahM/rhYnAg/HntL+C/p88y6w0=;\r\n        b=jx63BWS4jztHqI+Hkx/G3zQMMMv8Fq8RLwgMvaQkLTL2pQUDSvHHPqO/NrVFiD/ICS\r\n         DxSRri8gMKcF4jFnwOLsw4tGAwVRdkrEu51d6pjJi8j2ffrRD0lXv8xbQQua0rZLIDNo\r\n         6TfkUV6cNpcRt55xOrok/WvJhR7Kz/WNMpedlG3hHyZ0gGMDSeDfPdDa+BimuQC9lIiB\r\n         vYFjQrPJ5MzsrgoNSowKgk21rAPqC2pKfEfhhInGe+Xtu0VaNOtkFV8tacaYQtZXXW+r\r\n         QjVHewry1AYziAigCBO7LsTe91ByvvASPsPb7yjcF8SWnLBlc36BNymt2P45xSSnVu6f\r\n         CIOQ==",
+            "x-google-dkim-signature": "X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;\r\n        d=1e100.net; s=20251104; t=1783968735; x=1784573535;\r\n        h=content-type:to:subject:message-id:date:from:mime-version:x-gm-gg\r\n         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to\r\n         :content-type;\r\n        bh=7BJixiB7+wMYsvFq2yahM/rhYnAg/HntL+C/p88y6w0=;\r\n        b=rWwhE2X3Aoz9WplVRubxL1/pKOn+GPP6eg0mM6hfVvnfVbNbZhYllm4bYC5zDjY4M4\r\n         bHadacYdLvuaD2E8UIE24HhQ44GPIB9i10U6OJbwsvKWQ0cTuKInSITVN8WimND6Y5ck\r\n         MHYt3pzmYGiH2GuXiNWABgH+1b6L6LvW54g6ldzMw4o2ptbsedbV3On8uWEuE8QZvZPn\r\n         NDcFB+9QGz08Uu6hCfhKQtemyRfzx9EGAfWG4JXEbybIBpKj+trDOQ9xItBbiftXp3kh\r\n         XCNo7lpSLo91R/XhjiQXLneYkI0M91DAo4uSKCqwazgCYptBYYC3GPFuvA6vNZCcinoM\r\n         lURA==",
+            "x-gm-message-state": "X-Gm-Message-State: AOJu0Yzr1cduqsrEgw305IsN7seGgLX4RUSBbbnvxOFnNBljEpXNRpIG\r\n\tvqowWrQSsVtpHi0qaaiPARA+ZJlDlxuadKBl+tYr+iohqSqpv/d0m3SwvCc4jR1LbHjfTK5aYFg\r\n\tcrIcHtvRZwHkFEzyzb3kUhUEh/OQOnse36Nj+tHzSD6GlGLcMv3U9K8o=",
+            "x-gm-gg": "X-Gm-Gg: AfdE7ckIXnXTveL+bZ0XUMKrxbuXinDGDs1CL0Ch7EvN85LQd4hCoNrLjGLAZMkDTwx\r\n\tYIGu54K6DNzXrPCuGYuk+6qNw1Rb1YR0jrEM8kXr3WPld05wRlsijU54sHxyxiyV6ErtcRvNtrf\r\n\tIsKKInclO4coqNHa1hOYnbL1/4Ehmak3GhTntNOO5CcmiGI/viBLrTMLq0B0apnh1kRfurRF4Pq\r\n\tg3BdwG47lxi9L1TIUNMHq5cjv9AI0pAprmtMfrV4EZQik3V4Zr0I7+xgvSAuQdvQNVyxLjM66zU\r\n\tTgKcx6dQ+XgWFJMgxn7s+L3G8rZ1Wg==",
+            "mime-version": "MIME-Version: 1.0",
+            "from": "From: BTAD24O1056 SAKSHAM BANSAL <24ad10sa56@mitsgwl.ac.in>",
+            "date": "Date: Tue, 14 Jul 2026 00:26:22 +0530",
+            "x-gm-features": "X-Gm-Features: AVVi8CfwUAoq_sEiPe-4r00TaY_LiWMFyO8o6jOdNS3K7o685wS1KvMIGCWLhFQ",
+            "message-id": "Message-ID: <CA+FUAi+2mit0PVnNY8gVagjC9106iCdPjN8wMBajKUs1teQEnQ@mail.gmail.com>",
+            "subject": "Subject: It is URGENT -! Unstop Internship",
+            "to": "To: Saksham Bansal <kanhabansal563@gmail.com>",
+            "content-type": "Content-Type: multipart/alternative; boundary=\"000000000000b920290656829608\""
+          },
+          "html": "<div dir=\"ltr\">Saksham Is Awesome</div>\n",
+          "text": "Saksham Is Awesome\n",
+          "textAsHtml": "<p>Saksham Is Awesome</p>",
+          "subject": "It is URGENT -! Unstop Internship",
+          "date": "2026-07-13T18:56:22.000Z",
+          "to": {
+            "value": [
+              {
+                "address": "kanhabansal563@gmail.com",
+                "name": "Saksham Bansal"
+              }
+            ],
+            "html": "<span class=\"mp_address_group\"><span class=\"mp_address_name\">Saksham Bansal</span> &lt;<a href=\"mailto:kanhabansal563@gmail.com\" class=\"mp_address_email\">kanhabansal563@gmail.com</a>&gt;</span>",
+            "text": "\"Saksham Bansal\" <kanhabansal563@gmail.com>"
+          },
+          "from": {
+            "value": [
+              {
+                "address": "24ad10sa56@mitsgwl.ac.in",
+                "name": "BTAD24O1056 SAKSHAM BANSAL"
+              }
+            ],
+            "html": "<span class=\"mp_address_group\"><span class=\"mp_address_name\">BTAD24O1056 SAKSHAM BANSAL</span> &lt;<a href=\"mailto:24ad10sa56@mitsgwl.ac.in\" class=\"mp_address_email\">24ad10sa56@mitsgwl.ac.in</a>&gt;</span>",
+            "text": "\"BTAD24O1056 SAKSHAM BANSAL\" <24ad10sa56@mitsgwl.ac.in>"
+          },
+          "messageId": "<CA+FUAi+2mit0PVnNY8gVagjC9106iCdPjN8wMBajKUs1teQEnQ@mail.gmail.com>"
+        },
+        "pairedItem": {
+          "item": 0
+        }
+      }
+    ]
+  },
+  "connections": {
+    "Gmail Trigger": {
+      "main": [
+        [
+          {
+            "node": "Text Classifier",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Text Classifier",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Text Classifier": {
+      "main": [
+        [
+          {
+            "node": "Monitoring",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Priority",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Newsletter",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Jobs",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Priority4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Priority": {
+      "main": [
+        [
+          {
+            "node": "Remove label from message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Text Classifier1": {
+      "main": [
+        [
+          {
+            "node": "Monitoring1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Priority1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Newsletter1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Jobs1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Priority5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Text Classifier1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Priority1": {
+      "main": [
+        []
+      ]
+    },
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Get many messages",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get many messages": {
+      "main": [
+        [
+          {
+            "node": "Text Classifier1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Monitoring": {
+      "main": [
+        [
+          {
+            "node": "Remove label from message4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Newsletter": {
+      "main": [
+        [
+          {
+            "node": "Remove label from message1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Jobs": {
+      "main": [
+        [
+          {
+            "node": "Remove label from message2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Priority4": {
+      "main": [
+        [
+          {
+            "node": "Remove label from message3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "7396ebbd-b9d1-4540-8011-ca1e2d0d77d9",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "f05b4d37b4833e8800cf615c4b4e3859a06c5f9758ad2b6e90ef9d744c285a41"
+  },
+  "nodeGroups": [],
+  "id": "5CTBeMmEmjfVTERI",
+  "tags": []
+}
